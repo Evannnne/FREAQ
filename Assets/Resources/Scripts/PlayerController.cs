@@ -4,14 +4,23 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    public static PlayerController Instance { get; private set; }
+
+    public bool CanClick => Time.time - m_lastClickTime >= clickCooldown;
+
     public Camera mainCamera;
 
     public float moveSpeed = 10;
     public float xRotationSensitivity = 4;
+    public float clickCooldown = 0.5f;
 
     [SerializeField] private Rigidbody m_rigidbody;
     private void Awake()
     {
+        if (Instance != null)
+            Debug.LogError(GetType() + " already attached to " + gameObject.name + "!");
+        else Instance = this;
+
         m_rigidbody = GetComponent<Rigidbody>();
     }
 
@@ -43,5 +52,15 @@ public class PlayerController : MonoBehaviour
         //if (Input.GetKey(KeyCode.E) || Input.GetKey(KeyCode.RightBracket)) rotation = 1;
         rotation *= xRotationSensitivity * Time.deltaTime;
         transform.Rotate(Vector3.up, rotation);
+    }
+
+    private float m_lastClickTime;
+    private void Update()
+    {
+        if(Input.GetMouseButtonDown(0) && WaveGenerator.IsInSweetspot && CanClick)
+        {
+            EventHandler.TriggerEvent("SweetspotHit");
+            m_lastClickTime = Time.time;
+        }       
     }
 }

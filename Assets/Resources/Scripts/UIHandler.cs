@@ -25,36 +25,36 @@ public class UIHandler : MonoBehaviour
         }
     }
 
+    private Coroutine m_currentCoroutine;
     private void OnSweetSpotHit(object foo)
     {
-        if (!isAnimating)
-        {
-            isAnimating = true;
-            StartCoroutine(AnimateSweetspot(true));
-        }
+        if (m_currentCoroutine != null) StopCoroutine(m_currentCoroutine);
+        m_currentCoroutine = StartCoroutine(AnimateSweetspot(true));
     }
     private void OnSweetSpotMissed(object foo)
     {
-        if (!isAnimating)
-        {
-            isAnimating = true;
-            StartCoroutine(AnimateSweetspot(false));
-        }
+        if (m_currentCoroutine != null) StopCoroutine(m_currentCoroutine);
+        m_currentCoroutine = StartCoroutine(AnimateSweetspot(false));
     }
     private IEnumerator AnimateSweetspot(bool success)
     {
+        float t = 0;
+
         Color targetColor = success ? new Color(1, 1, 1, 4) : new Color(1, 0, 0, 1);
-        yield return CoroutineBuilder.Linear01(t =>
+        while(t <= 1)
         {
             sweetspotImage.transform.localScale = Vector3.Lerp(Vector3.one, Vector3.one * 2f, t);
             sweetspotImage.color = Color.Lerp(new Color(1, 1, 1, 0.75f), targetColor, t);
-        }, speed: 20f);
-        yield return CoroutineBuilder.Linear01(t =>
+            t += Time.deltaTime * 20;
+            yield return null;
+        }
+        t = 0;
+        while (t <= 1)
         {
             sweetspotImage.transform.localScale = Vector3.Lerp(Vector3.one * 2f, Vector3.one, Mathf.Sqrt(t));
             sweetspotImage.color = Color.Lerp(targetColor, new Color(1, 1, 1, 0), Mathf.Sqrt(t));
-        }, speed: 2f);
-        yield return new WaitForSeconds(0.1f);
-        isAnimating = false;
+            t += Time.deltaTime * 2;
+            yield return null;
+        }
     }
 }        

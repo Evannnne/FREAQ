@@ -13,7 +13,6 @@ public class PlayerController : MonoBehaviour
     public float moveSpeed = 10;
     public float xRotationSensitivity = 4;
     public float yRotationSensitivity = 4;
-    public float clickCooldown = 0.5f;
 
     public float successDelay = 0.1f;
     public float failDelay = 0.5f;
@@ -76,12 +75,12 @@ public class PlayerController : MonoBehaviour
             if (WaveGenerator.IsInSweetspot)
             {
                 EventHandler.TriggerEvent("SweetspotHit");
-                clickCooldown = successDelay;
+                m_remainingCooldown = successDelay;
             }
             else
             {
                 EventHandler.TriggerEvent("SweetspotMissed");
-                clickCooldown = failDelay;
+                m_remainingCooldown = failDelay;
             }
         }       
     }

@@ -6,13 +6,18 @@ public class PlayerController : MonoBehaviour
 {
     public static PlayerController Instance { get; private set; }
 
-    public bool CanClick => Time.time - m_lastClickTime >= clickCooldown;
+    public bool CanClick => m_remainingCooldown <= 0;
 
     public Camera mainCamera;
 
     public float moveSpeed = 10;
     public float xRotationSensitivity = 4;
+    public float yRotationSensitivity = 4;
     public float clickCooldown = 0.5f;
+
+    public float successDelay = 0.1f;
+    public float failDelay = 0.5f;
+    private float m_remainingCooldown;
 
     [SerializeField] private Rigidbody m_rigidbody;
     private void Awake()
@@ -22,11 +27,17 @@ public class PlayerController : MonoBehaviour
         else Instance = this;
 
         m_rigidbody = GetComponent<Rigidbody>();
+
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
+        m_remainingCooldown -= Time.fixedDeltaTime;
+        m_remainingCooldown = Mathf.Max(0, m_remainingCooldown);
+
         // Movement
         float xInput = 0;
         float yInput = 0;
@@ -46,21 +57,32 @@ public class PlayerController : MonoBehaviour
         m_rigidbody.MovePosition(m_rigidbody.position + move);
 
         // Camera rotation
-        float rotation = 0;
-        rotation = Input.GetAxis("Mouse X");
-        //if (Input.GetKey(KeyCode.Q) || Input.GetKey(KeyCode.LeftBracket)) rotation = -1;
-        //if (Input.GetKey(KeyCode.E) || Input.GetKey(KeyCode.RightBracket)) rotation = 1;
-        rotation *= xRotationSensitivity * Time.deltaTime;
-        transform.Rotate(Vector3.up, rotation);
+        float xRotation = Input.GetAxis("Mouse X");
+        float yRotation = Input.GetAxis("Mouse Y");
+        xRotation *= xRotationSensitivity * Time.deltaTime;
+        yRotation *= yRotationSensitivity * Time.deltaTime;
+        transform.Rotate(Vector3.up, xRotation);
+        var eul = mainCamera.transform.localEulerAngles;
+        if (eul.x > 180) eul.x -= 360;
+        eul.x += yRotation * -1;
+        eul.x = Mathf.Clamp(eul.x, -90, 90);
+        mainCamera.transform.localEulerAngles = eul;
     }
 
-    private float m_lastClickTime;
     private void Update()
     {
-        if(Input.GetMouseButtonDown(0) && WaveGenerator.IsInSweetspot && CanClick)
+        if(Input.GetMouseButtonDown(0) && CanClick)
         {
-            EventHandler.TriggerEvent("SweetspotHit");
-            m_lastClickTime = Time.time;
+            if (WaveGenerator.IsInSweetspot)
+            {
+                EventHandler.TriggerEvent("SweetspotHit");
+                clickCooldown = successDelay;
+            }
+            else
+            {
+                EventHandler.TriggerEvent("SweetspotMissed");
+                clickCooldown = failDelay;
+            }
         }       
     }
 }

@@ -19,6 +19,8 @@ public class PlayerController : MonoBehaviour
     private float m_remainingCooldown;
 
     [SerializeField] private Rigidbody m_rigidbody;
+    [SerializeField] private Animator m_animator;
+
     private void Awake()
     {
         if (Instance != null)
@@ -54,6 +56,7 @@ public class PlayerController : MonoBehaviour
         move *= Time.fixedDeltaTime;
 
         m_rigidbody.MovePosition(m_rigidbody.position + move);
+        m_animator.SetBool("Moving", move != Vector3.zero);
 
         // Camera rotation
         float xRotation = Input.GetAxis("Mouse X");
@@ -76,6 +79,8 @@ public class PlayerController : MonoBehaviour
             {
                 EventHandler.TriggerEvent("SweetspotHit");
                 m_remainingCooldown = successDelay;
+
+                m_animator.SetTrigger("Fire");
             }
             else
             {

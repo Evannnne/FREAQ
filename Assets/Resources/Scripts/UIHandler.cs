@@ -9,6 +9,8 @@ public class UIHandler : MonoBehaviour
     public Image screenOverlay;
     public Image heartFill;
 
+    public Text freaqsLeftText;
+
     public CanvasGroup startInfoCanvasGroup;
     public CanvasGroup deathCanvasGroup;
     public CanvasGroup missionSuccessCanvasGroup;
@@ -34,6 +36,8 @@ public class UIHandler : MonoBehaviour
             sweetspotImage.color = Color.Lerp(sweetspotImage.color, target, Time.deltaTime * 10);
         }
         heartFill.fillAmount = PlayerController.Instance.health / 100f;
+
+        freaqsLeftText.text = GameManager.Instance.ZombieKillsRequiredToProgress.ToString();
     }
 
     private Coroutine m_currentCoroutine;

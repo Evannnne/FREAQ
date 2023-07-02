@@ -8,6 +8,6 @@ public class DamagerBehaviour : MonoBehaviour
 
     public virtual void OnCollisionEnter(Collision collision)
     {
-        collision.gameObject.BroadcastMessage("OnHit", damage, SendMessageOptions.DontRequireReceiver);
+        collision.gameObject.SendMessageUpwards("OnHit", damage, SendMessageOptions.DontRequireReceiver);
     }
 }

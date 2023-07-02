@@ -69,6 +69,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bloodEffectPrefab: {fileID: 8536662849101159792, guid: 1d0eff10d016f7d4090b7aeb676199e0, type: 3}
+  hurtDistance: 4
 --- !u!1001 &7712554431032985798
 PrefabInstance:
   m_ObjectHideFlags: 0

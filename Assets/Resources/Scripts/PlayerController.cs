@@ -22,6 +22,11 @@ public class PlayerController : MonoBehaviour
 
     public float successDelay = 0.1f;
     public float failDelay = 0.5f;
+
+    public float health = 100;
+
+    public float invincibilityPeriod = 2.0f;
+
     private float m_remainingCooldown;
 
     public Weapon currentWeapon;
@@ -127,5 +132,19 @@ public class PlayerController : MonoBehaviour
             proj.transform.forward = dir;
             proj.GetComponent<Rigidbody>().velocity = dir * 30;
         }
+    }
+
+    private float m_lastHitTime;
+
+    public void OnHit(object hit)
+    {
+        if (Time.time - m_lastHitTime >= invincibilityPeriod)
+        {
+            EventHandler.TriggerEvent("PlayerDamaged");
+            HitData data = (HitData)hit;
+            health -= data.damage;
+            m_lastHitTime = Time.time;
+        }
+
     }
 }

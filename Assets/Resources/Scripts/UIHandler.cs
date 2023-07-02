@@ -6,6 +6,8 @@ using UnityEngine.UI;
 public class UIHandler : MonoBehaviour
 {
     public Image sweetspotImage;
+    public Image screenOverlay;
+    public Image heartFill;
 
     private bool isAnimating = false;
 
@@ -13,6 +15,7 @@ public class UIHandler : MonoBehaviour
     {
         EventHandler.Subscribe("SweetspotHit", OnSweetSpotHit);
         EventHandler.Subscribe("SweetspotMissed", OnSweetSpotMissed);
+        EventHandler.Subscribe("PlayerDamaged", OnPlayerDamaged);
     }
 
     // Update is called once per frame
@@ -23,6 +26,7 @@ public class UIHandler : MonoBehaviour
             Color target = WaveGenerator.IsInSweetspot ? new Color(1, 1, 1, 0.50f) : Color.clear;
             sweetspotImage.color = Color.Lerp(sweetspotImage.color, target, Time.deltaTime * 10);
         }
+        heartFill.fillAmount = PlayerController.Instance.health / 100f;
     }
 
     private Coroutine m_currentCoroutine;
@@ -56,5 +60,19 @@ public class UIHandler : MonoBehaviour
             t += Time.deltaTime * 2;
             yield return null;
         }
+    }
+
+    private void OnPlayerDamaged(object foo) => StartCoroutine(RunOverlay(Color.red, Color.clear, 0.5f));
+    private IEnumerator RunOverlay(Color start, Color end, float time)
+    {
+        float t = 0;
+        screenOverlay.color = start;
+        while (t <= 1)
+        {
+            screenOverlay.color = Color.Lerp(start, end, t);
+            t += Time.deltaTime / time;
+            yield return null;
+        }
+        screenOverlay.color = end;
     }
 }        

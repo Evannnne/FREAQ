@@ -2,6 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum Weapon
+{
+    None = 0,
+    Pistol = 1
+}
+
 public class PlayerController : MonoBehaviour
 {
     public static PlayerController Instance { get; private set; }
@@ -18,8 +24,17 @@ public class PlayerController : MonoBehaviour
     public float failDelay = 0.5f;
     private float m_remainingCooldown;
 
+    public Weapon currentWeapon;
+
+    public GameObject projectilePrefab_pistol;
+
     [SerializeField] private Rigidbody m_rigidbody;
     [SerializeField] private Animator m_animator;
+    [SerializeField] private Transform m_armRotator;
+
+    [SerializeField] private Transform m_projectileOrigin_pistol;
+
+    private Vector3 m_currentSway;
 
     private void Awake()
     {
@@ -70,6 +85,18 @@ public class PlayerController : MonoBehaviour
         eul.x = Mathf.Clamp(eul.x, -90, 90);
         mainCamera.transform.localEulerAngles = eul;
     }
+    private void LateUpdate()
+    {
+        float xRotation = Input.GetAxis("Mouse X");
+        float yRotation = Input.GetAxis("Mouse Y");
+
+        Vector3 targetSway = new Vector3(yRotation * -4, xRotation * 4, 0);
+        m_currentSway = Vector3.Lerp(m_currentSway, targetSway, Time.deltaTime * 4);
+
+        var eul = m_armRotator.transform.localEulerAngles;
+        eul += m_currentSway;
+        m_armRotator.transform.localEulerAngles = eul;
+    }
 
     private void Update()
     {
@@ -79,8 +106,7 @@ public class PlayerController : MonoBehaviour
             {
                 EventHandler.TriggerEvent("SweetspotHit");
                 m_remainingCooldown = successDelay;
-
-                m_animator.SetTrigger("Fire");
+                HandleFire();
             }
             else
             {
@@ -88,5 +114,18 @@ public class PlayerController : MonoBehaviour
                 m_remainingCooldown = failDelay;
             }
         }       
+    }
+
+    private void HandleFire()
+    {
+        m_animator.SetTrigger("Fire");
+        if(currentWeapon == Weapon.Pistol)
+        {
+            var dir = (mainCamera.transform.position + mainCamera.transform.forward * 100 - m_projectileOrigin_pistol.transform.position).normalized;
+            var proj = Instantiate(projectilePrefab_pistol);
+            proj.transform.position = m_projectileOrigin_pistol.position;
+            proj.transform.forward = dir;
+            proj.GetComponent<Rigidbody>().velocity = dir * 30;
+        }
     }
 }

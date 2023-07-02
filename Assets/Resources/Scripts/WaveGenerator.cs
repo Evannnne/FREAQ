@@ -37,7 +37,6 @@ public class WaveGenerator : MonoBehaviour
     {
         m_texture = new Texture2D((int)dimensions.x, (int)dimensions.y);
         m_texture.filterMode = FilterMode.Point;
-        m_texture.alphaIsTransparency = true;
         m_sprite = Sprite.Create(m_texture, new Rect(0, 0, m_texture.width, m_texture.height), Vector2.zero);
         m_colorBuffer = new Color[m_texture.width * m_texture.height];
     }

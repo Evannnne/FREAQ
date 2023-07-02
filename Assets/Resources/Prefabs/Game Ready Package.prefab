@@ -959,8 +959,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mainCamera: {fileID: 8471992794283401336}
   moveSpeed: 10
-  xRotationSensitivity: 40
-  yRotationSensitivity: 40
+  xRotationSensitivity: 100
+  yRotationSensitivity: 100
   successDelay: 0.2
   failDelay: 0.5
   health: 100

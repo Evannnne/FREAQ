@@ -41,8 +41,12 @@ public class ZombieBehaviour : MonoBehaviour
             PlayerController.Instance.OnHit(new HitData { damage = 25f });
     }
 
+    private bool alreadyKilled = false;
     public void OnHit(object hit)
     {
+        if (alreadyKilled) return;
+        else alreadyKilled = true;
+
         var rbs = GetComponentsInChildren<Rigidbody>();
         foreach (var rb in rbs)
         {

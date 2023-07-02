@@ -87,13 +87,13 @@ MonoBehaviour:
     value: {r: 0, g: 0, b: 0, a: 1}
   depthThreshold:
     overrideState: 1
-    value: 0.5
+    value: 0.6
   depthNormalThreshold:
     overrideState: 1
     value: 0
   depthNormalThresholdScale:
     overrideState: 1
-    value: 50
+    value: 60
   normalThreshold:
     overrideState: 0
     value: 0.25
@@ -193,7 +193,6 @@ MonoBehaviour:
   settings:
   - {fileID: -406540585261674874}
   - {fileID: -3890575737923912240}
-  - {fileID: -5458846234916417803}
 --- !u!114 &4862477119867701996
 MonoBehaviour:
   m_ObjectHideFlags: 3

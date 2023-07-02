@@ -101,6 +101,7 @@ public class PlayerController : MonoBehaviour
 
         Vector3 targetSway = new Vector3(yRotation * -4, xRotation * 4, 0);
         m_currentSway = Vector3.Lerp(m_currentSway, targetSway, Time.deltaTime * 4);
+        m_currentSway = new Vector3(Mathf.Clamp(m_currentSway.x, -10, 10), Mathf.Clamp(m_currentSway.y, -10, 10), 0);
 
         var eul = m_armRotator.transform.localEulerAngles;
         eul += m_currentSway;

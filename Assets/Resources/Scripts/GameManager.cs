@@ -4,15 +4,15 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public bool GameStarted { get; private set; }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if(!GameStarted && Input.anyKey)
+        {
+            GameStarted = true;
+            EventHandler.TriggerEvent("GameStart");
+        }
     }
 }

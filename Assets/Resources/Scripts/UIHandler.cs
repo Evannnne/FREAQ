@@ -9,6 +9,9 @@ public class UIHandler : MonoBehaviour
     public Image screenOverlay;
     public Image heartFill;
 
+    public CanvasGroup startInfoCanvasGroup;
+    public CanvasGroup deathCanvasGroup;
+
     private bool isAnimating = false;
 
     private void Awake()
@@ -16,6 +19,8 @@ public class UIHandler : MonoBehaviour
         EventHandler.Subscribe("SweetspotHit", OnSweetSpotHit);
         EventHandler.Subscribe("SweetspotMissed", OnSweetSpotMissed);
         EventHandler.Subscribe("PlayerDamaged", OnPlayerDamaged);
+        EventHandler.Subscribe("GameStart", OnGameStarted);
+        EventHandler.Subscribe("PlayerDeath", OnPlayerDeath);
     }
 
     // Update is called once per frame
@@ -40,7 +45,12 @@ public class UIHandler : MonoBehaviour
         if (m_currentCoroutine != null) StopCoroutine(m_currentCoroutine);
         m_currentCoroutine = StartCoroutine(AnimateSweetspot(false));
     }
+    private void OnPlayerDamaged(object foo) => StartCoroutine(RunOverlay(Color.red, Color.clear, 0.5f));
+    private void OnGameStarted(object foo) => StartCoroutine(FadeCanvasGroup(startInfoCanvasGroup, false, 0.5f));
+    private void OnPlayerDeath(object foo) => StartCoroutine(FadeCanvasGroup(deathCanvasGroup, true, 0.5f));
+    
     private IEnumerator AnimateSweetspot(bool success)
+
     {
         float t = 0;
 
@@ -61,8 +71,6 @@ public class UIHandler : MonoBehaviour
             yield return null;
         }
     }
-
-    private void OnPlayerDamaged(object foo) => StartCoroutine(RunOverlay(Color.red, Color.clear, 0.5f));
     private IEnumerator RunOverlay(Color start, Color end, float time)
     {
         float t = 0;
@@ -74,5 +82,18 @@ public class UIHandler : MonoBehaviour
             yield return null;
         }
         screenOverlay.color = end;
+    }
+
+    private IEnumerator FadeCanvasGroup(CanvasGroup target, bool fadingIn, float time)
+    {
+        float t = 0;
+        target.alpha = fadingIn ? 0 : 1;
+        while (t <= 1)
+        {
+            target.alpha = Mathf.Lerp(fadingIn ? 0 : 1, fadingIn ? 1 : 0, t); 
+            t += Time.deltaTime / time;
+            yield return null;
+        }
+        target.alpha = fadingIn ? 1 : 0;
     }
 }        

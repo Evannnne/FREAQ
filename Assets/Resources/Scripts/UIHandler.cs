@@ -11,6 +11,7 @@ public class UIHandler : MonoBehaviour
 
     public CanvasGroup startInfoCanvasGroup;
     public CanvasGroup deathCanvasGroup;
+    public CanvasGroup missionSuccessCanvasGroup;
 
     private bool isAnimating = false;
 
@@ -21,6 +22,7 @@ public class UIHandler : MonoBehaviour
         EventHandler.Subscribe("PlayerDamaged", OnPlayerDamaged);
         EventHandler.Subscribe("GameStart", OnGameStarted);
         EventHandler.Subscribe("PlayerDeath", OnPlayerDeath);
+        EventHandler.Subscribe("MissionSuccess", OnMissionSuccess);
     }
 
     // Update is called once per frame
@@ -46,9 +48,10 @@ public class UIHandler : MonoBehaviour
         m_currentCoroutine = StartCoroutine(AnimateSweetspot(false));
     }
     private void OnPlayerDamaged(object foo) => StartCoroutine(RunOverlay(Color.red, Color.clear, 0.5f));
-    private void OnGameStarted(object foo) => StartCoroutine(FadeCanvasGroup(startInfoCanvasGroup, false, 0.5f));
-    private void OnPlayerDeath(object foo) => StartCoroutine(FadeCanvasGroup(deathCanvasGroup, true, 0.5f));
-    
+    private void OnGameStarted(object foo) => StartCoroutine(FadeCanvasGroup(startInfoCanvasGroup, false, 0.25f));
+    private void OnPlayerDeath(object foo) => StartCoroutine(FadeCanvasGroup(deathCanvasGroup, true, 0.25f));
+    private void OnMissionSuccess(object foo) => StartCoroutine(FadeCanvasGroup(missionSuccessCanvasGroup, true, 0.25f));
+
     private IEnumerator AnimateSweetspot(bool success)
 
     {

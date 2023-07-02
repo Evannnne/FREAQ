@@ -23,4 +23,6 @@ public static class EventHandler
         if (s_lookup.ContainsKey(eventName))
             s_lookup[eventName].Remove(function);
     }
+
+    public static void ClearEventListeners() => s_lookup.Clear();
 }

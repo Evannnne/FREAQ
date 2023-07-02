@@ -56,6 +56,8 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
+        if (GameManager.Instance.CurrentGameState != GameState.InProgress) return;
+
         m_remainingCooldown -= Time.fixedDeltaTime;
         m_remainingCooldown = Mathf.Max(0, m_remainingCooldown);
 
@@ -92,6 +94,8 @@ public class PlayerController : MonoBehaviour
     }
     private void LateUpdate()
     {
+        if (GameManager.Instance.CurrentGameState != GameState.InProgress) return;
+
         float xRotation = Input.GetAxis("Mouse X");
         float yRotation = Input.GetAxis("Mouse Y");
 
@@ -105,7 +109,9 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        if(Input.GetMouseButtonDown(0) && CanClick)
+        if (GameManager.Instance.CurrentGameState != GameState.InProgress) return;
+
+        if (Input.GetMouseButtonDown(0) && CanClick)
         {
             if (WaveGenerator.IsInSweetspot)
             {
@@ -144,6 +150,11 @@ public class PlayerController : MonoBehaviour
             HitData data = (HitData)hit;
             health -= data.damage;
             m_lastHitTime = Time.time;
+
+            if(health <= 0)
+            {
+                EventHandler.TriggerEvent("PlayerDeath");
+            }
         }
 
     }

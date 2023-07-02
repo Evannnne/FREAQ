@@ -23,6 +23,8 @@ public class ZombieBehaviour : MonoBehaviour
     Vector3 recognizedPosition = Vector3.zero;
     private void Update()
     {
+        if (GameManager.Instance.CurrentGameState != GameState.InProgress) return;
+
         if (
             Vector3.Distance(recognizedPosition, PlayerController.Instance.transform.position) >= 5 ||
             m_nma.velocity.magnitude < 1.0f && Vector3.Distance(transform.position, PlayerController.Instance.transform.position) > hurtDistance
@@ -62,6 +64,8 @@ public class ZombieBehaviour : MonoBehaviour
 
         var blood = Instantiate(bloodEffectPrefab);
         blood.transform.position = data.point;
+
+        EventHandler.TriggerEvent("ZombieKilled");
     }
 
 }

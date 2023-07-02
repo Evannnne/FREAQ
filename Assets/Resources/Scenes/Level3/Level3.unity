@@ -7423,6 +7423,10 @@ PrefabInstance:
         TO RESTART'
       objectReference: {fileID: 0}
     - target: {fileID: 8471992793022206517, guid: 1189cca77ef6fb1409d2924ae850ee3b, type: 3}
+      propertyPath: failDelay
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8471992793022206517, guid: 1189cca77ef6fb1409d2924ae850ee3b, type: 3}
       propertyPath: successDelay
       value: 0.1
       objectReference: {fileID: 0}

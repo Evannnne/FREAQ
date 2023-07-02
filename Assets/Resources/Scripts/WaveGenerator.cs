@@ -128,8 +128,8 @@ public class WaveGenerator : MonoBehaviour
 
                 if (x < width / 2) targetColor.a *= 0.25f;
 
-                if (targetColor != Color.white && Mathf.Abs(trueY - GetValueAt(0)) < lineTolerance / 2f)
-                    targetColor = new Color(0.5f, 0, 0, 1);
+                /*if (targetColor != Color.white && Mathf.Abs(trueY - GetValueAt(0)) < lineTolerance / 2f)
+                    targetColor = new Color(0.5f, 0, 0, 1);*/
 
                 m_colorBuffer[y * m_texture.width + x] = targetColor;
             }

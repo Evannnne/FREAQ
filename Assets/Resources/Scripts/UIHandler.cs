@@ -9,6 +9,10 @@ public class UIHandler : MonoBehaviour
     public Image screenOverlay;
     public Image heartFill;
 
+    public Color chargeometerReady;
+    public Color chargeometerUnready;
+    public Image chargeometerFill;
+
     public Text freaqsLeftText;
 
     public CanvasGroup startInfoCanvasGroup;
@@ -38,6 +42,8 @@ public class UIHandler : MonoBehaviour
         heartFill.fillAmount = PlayerController.Instance.health / 100f;
 
         freaqsLeftText.text = GameManager.Instance.ZombieKillsRequiredToProgress.ToString();
+
+        chargeometerFill.color = Color.Lerp(chargeometerFill.color, PlayerController.Instance.Failed ? chargeometerUnready : chargeometerReady, Time.deltaTime * 10);
     }
 
     private Coroutine m_currentCoroutine;

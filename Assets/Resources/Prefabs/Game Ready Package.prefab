@@ -122,6 +122,9 @@ MonoBehaviour:
   sweetspotImage: {fileID: 555821614}
   screenOverlay: {fileID: 1115407611}
   heartFill: {fileID: 70279110}
+  chargeometerReady: {r: 0.63529414, g: 1, b: 0.69411767, a: 1}
+  chargeometerUnready: {r: 0.7490196, g: 0, b: 0, a: 1}
+  chargeometerFill: {fileID: 1850684264}
   freaqsLeftText: {fileID: 4909731518461595428}
   startInfoCanvasGroup: {fileID: 759924043}
   deathCanvasGroup: {fileID: 1633246825}
@@ -986,8 +989,8 @@ MonoBehaviour:
   checkInterval: 0.02
   checkSamples: 10
   sweetSpotThreshold: 0.9
-  speed: 8
-  scale: 32
+  musicSource: {fileID: 0}
+  currentTime: 0
 --- !u!95 &8471992793022206542
 Animator:
   serializedVersion: 5
@@ -1629,6 +1632,17 @@ RectTransform:
 --- !u!114 &555821614 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4716751676445756393, guid: 79abfcfbf1903bc4cb9a574f5fb3546b, type: 3}
+  m_PrefabInstance: {fileID: 4716751677001441735}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1850684264 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4716751675353273007, guid: 79abfcfbf1903bc4cb9a574f5fb3546b, type: 3}
   m_PrefabInstance: {fileID: 4716751677001441735}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}

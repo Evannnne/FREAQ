@@ -13,6 +13,7 @@ public class PlayerController : MonoBehaviour
     public static PlayerController Instance { get; private set; }
 
     public bool CanClick => m_remainingCooldown <= 0;
+    public bool Failed => !CanClick && m_wasFail;
 
     public Camera mainCamera;
 
@@ -28,6 +29,7 @@ public class PlayerController : MonoBehaviour
     public float invincibilityPeriod = 2.0f;
 
     private float m_remainingCooldown;
+    private bool m_wasFail = false;
 
     public Weapon currentWeapon;
 
@@ -118,12 +120,14 @@ public class PlayerController : MonoBehaviour
             {
                 EventHandler.TriggerEvent("SweetspotHit");
                 m_remainingCooldown = successDelay;
+                m_wasFail = false;
                 HandleFire();
             }
             else
             {
                 EventHandler.TriggerEvent("SweetspotMissed");
                 m_remainingCooldown = failDelay;
+                m_wasFail = true;
             }
         }       
     }
